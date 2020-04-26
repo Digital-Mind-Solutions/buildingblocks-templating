@@ -31,7 +31,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation "org.digitalmind.buildingblocks.core:dynamic-cache-resolver:1.0.0"
-    implementation "org.digitalmind.buildingblocks.core:jpaauditor:1.0.0"
+    implementation "org.digitalmind.buildingblocks.core:jpautils:1.0.0"
 
     implementation "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
@@ -64,7 +64,7 @@ publishing {
         }
     }
     publications {
-        templatingCore(MavenPublication) {
+        coreTemplate(MavenPublication) {
             from components.java
         }
     }
