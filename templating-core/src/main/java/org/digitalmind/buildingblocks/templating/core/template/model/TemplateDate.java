@@ -1,5 +1,6 @@
 package org.digitalmind.buildingblocks.templating.core.template.model;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.SimpleDateFormat;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class TemplateDate extends Date {
     private static ConcurrentHashMap<String, SimpleDateFormat> formatMap = new ConcurrentHashMap<>();
 
@@ -27,6 +29,12 @@ public class TemplateDate extends Date {
     }
 
     public String format(String format, Locale locale) {
+        if (format == null) {
+            throw new IllegalArgumentException("TemplateDate->format: The format parameter must not be null");
+        }
+        if (locale == null) {
+            throw new IllegalArgumentException("TemplateDate->format: The locale parameter must not be null");
+        }
         SimpleDateFormat sdf = null;
         String key = format + "-" + locale.toString();
         sdf = formatMap.get(key);

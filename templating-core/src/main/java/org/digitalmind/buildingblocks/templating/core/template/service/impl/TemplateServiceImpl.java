@@ -117,6 +117,9 @@ public class TemplateServiceImpl implements TemplateService {
     public TemplateResult execute(TemplateIdentifier identifier, Map<String, Object> variables, Locale locale, MimeType mimeType) {
         Template template = templateDBService.getTemplate(identifier);
         TemplateEngineService templateEngineService = getTemplateEngineService(template.getEngine());
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
         return templateEngineService.execute(template, variables, locale, mimeType);
     }
 
