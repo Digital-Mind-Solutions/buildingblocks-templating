@@ -5,6 +5,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TemplateDate extends Date {
@@ -22,11 +23,16 @@ public class TemplateDate extends Date {
     }
 
     public String format(String format) {
+        return this.format(format, Locale.getDefault(Locale.Category.FORMAT));
+    }
+
+    public String format(String format, Locale locale) {
         SimpleDateFormat sdf = null;
-        sdf = formatMap.get(format);
+        String key = format + "-" + locale.toString();
+        sdf = formatMap.get(key);
         if (sdf == null) {
-            sdf = new SimpleDateFormat(format);
-            formatMap.put(format, sdf);
+            sdf = new SimpleDateFormat(key, locale);
+            formatMap.put(key, sdf);
         }
         return sdf.format(this);
     }
