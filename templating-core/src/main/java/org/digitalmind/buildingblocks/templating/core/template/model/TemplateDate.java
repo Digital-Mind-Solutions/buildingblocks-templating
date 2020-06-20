@@ -31,7 +31,7 @@ public class TemplateDate extends Date {
         String key = format + "-" + locale.toString();
         sdf = formatMap.get(key);
         if (sdf == null) {
-            sdf = new SimpleDateFormat(key, locale);
+            sdf = new SimpleDateFormat(format, locale);
             formatMap.put(key, sdf);
         }
         return sdf.format(this);
