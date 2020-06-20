@@ -61,12 +61,12 @@ public class Template extends ContextVersionableAuditModel {
     private String engine;
 
     @ApiModelProperty(value = "The template namespace", required = true)
-    @Column(name = "namespace")
+    @Column(name = "namespace", length = 750)
     @NotNull
     private String namespace;
 
     @ApiModelProperty(value = "The template name", required = true)
-    @Column(name = "name")
+    @Column(name = "name", length = 256)
     @NotNull
     private String name;
 

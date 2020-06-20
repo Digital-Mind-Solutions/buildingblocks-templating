@@ -2,6 +2,7 @@ package org.digitalmind.buildingblocks.templating.core.template.service.impl.thy
 
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.digitalmind.buildingblocks.templating.core.template.dto.TemplateEngineProperties;
 import org.digitalmind.buildingblocks.templating.core.template.dto.TemplateIdentifier;
 import org.digitalmind.buildingblocks.templating.core.template.entity.Template;
@@ -25,13 +26,14 @@ import java.util.Map;
 import java.util.Set;
 
 @Getter
+@Slf4j
 public class ThymeleafTemplateEngineServiceImpl implements TemplateEngineService {
 
     private final TemplateDBService templateDBService;
     private final TemplateEngineProperties templateEngineProperties;
     private final String engine;
-    private final SpringTemplateEngine templateEngine;
     private final ApplicationContext applicationContext;
+    private final SpringTemplateEngine templateEngine;
     private final ThymeleafEvaluationContext thymeleafEvaluationContext;
 
     public ThymeleafTemplateEngineServiceImpl(
@@ -49,7 +51,7 @@ public class ThymeleafTemplateEngineServiceImpl implements TemplateEngineService
         templateEngine.setTemplateResolver(new ThymeleafDBResourceResolver(templateDBService, this.engine, this.applicationContext));
         //templateEngine.setTemplateEngineMessageSource(messageSource);
         //templateEngine.addDialect(new SpringStandardDialect());
-        templateEngine.setEnableSpringELCompiler(true);
+        //templateEngine.setEnableSpringELCompiler(true);
 
         this.thymeleafEvaluationContext = new ThymeleafEvaluationContext(this.applicationContext, null);
     }
