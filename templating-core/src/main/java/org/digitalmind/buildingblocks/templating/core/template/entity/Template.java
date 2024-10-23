@@ -80,7 +80,7 @@ public class Template extends ContextVersionableAuditModel {
     private String content;
 
     @ApiModelProperty(value = "The template content type", required = true)
-    @Column(name = "content_type")
+    @Column(name = "[content_type]")
     @NotNull
     private String contentType;
 
