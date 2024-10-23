@@ -5,7 +5,7 @@ plugins {
     id 'maven-publish'
 }
 group = 'org.digitalmind.buildingblocks.templating'
-version = '1.0.0'
+version = '1.0.1'
 
 ext {
     lombokVersion = '1.18.12'
