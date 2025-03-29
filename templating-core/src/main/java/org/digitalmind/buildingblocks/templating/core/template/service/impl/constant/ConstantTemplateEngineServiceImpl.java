@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import javax.activation.MimeType;
+import jakarta.activation.MimeType;
 import java.util.*;
 import java.util.stream.Collectors;
 

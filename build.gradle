@@ -1,6 +1,6 @@
 allprojects {
     group = 'org.digitalmind.buildingblocks.templating'
-    version = '1.0.0'
+    version = '2.0.1'
 
     repositories {
         mavenCentral()

@@ -1,35 +1,26 @@
 package org.digitalmind.buildingblocks.templating.core.template.config;
 
 
-import com.google.common.base.Predicate;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import jakarta.servlet.ServletContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.*;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.paths.RelativePathProvider;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.*;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import javax.servlet.ServletContext;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.common.base.Predicates.or;
 import static org.digitalmind.buildingblocks.templating.core.template.config.TemplateModuleConfig.*;
-import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
-@EnableSwagger2
 @ConditionalOnProperty(name = API_ENABLED, havingValue = "true")
 public class TemplateSwaggerConfig {
 
@@ -90,72 +81,45 @@ public class TemplateSwaggerConfig {
         return new ApiSwaggerProperties();
     }
 
+
+    //TODO check new output
     @Bean(PREFIX + "Docket")
-    public Docket api(
-            ApiSwaggerProperties apiSwaggerProperties
-    ) {
-
-        List<SecurityScheme> schemeList = new ArrayList<>();
-        List<VendorExtension> vendorExtensions = new ArrayList<>();
-        schemeList.add(new BasicAuth("Basic Authentication", vendorExtensions));
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .host(apiSwaggerProperties.getDocket().getHost())
-                .pathProvider(new RelativePathProvider(servletContext) {
-                    @Override
-                    public String getApplicationBasePath() {
-                        return apiSwaggerProperties.getDocket().getBasePath();
-                    }
+    public GroupedOpenApi sopranoInboundApi() {
+        return GroupedOpenApi.builder()
+                .group(apiProperties().getInfo().getGroupName())
+                .packagesToScan(API_PACKAGE)
+                .addOpenApiCustomizer(openApi -> {
+                    SecurityScheme apiKeyScheme = new SecurityScheme()
+                            .name("ApiKey")
+                            .type(SecurityScheme.Type.APIKEY)
+                            .in(SecurityScheme.In.HEADER)
+                            .name("x-api-key");
+                    SecurityRequirement securityRequirement = new SecurityRequirement()
+                            .addList("ApiKey");
+                    openApi.info(apiInfo(apiProperties()));
+                    openApi.addSecurityItem(securityRequirement);
+                    openApi.components(new io.swagger.v3.oas.models.Components().addSecuritySchemes("ApiKey", apiKeyScheme));
                 })
-                .groupName(apiSwaggerProperties.getInfo().getGroupName())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage(API_PACKAGE))
-                //.paths(regex("/rest.*"))
-
-                //.apis(RequestHandlerSelectors.any())
-                //.paths(PathSelectors.any())
-                .paths(apiPaths(apiSwaggerProperties))
-                .build()
-                .apiInfo(apiInfo(apiSwaggerProperties))
-                .securitySchemes(schemeList)
-                .useDefaultResponseMessages(false);
-
-    }
-
-    private Predicate<String> apiPaths(ApiSwaggerProperties apiSwaggerProperties) {
-        return (Predicate<String>) or(regex(".*" + apiSwaggerProperties.getDocket().getBasePath() + ".*"));
-    }
-
-    private ApiInfo apiInfo(ApiSwaggerProperties apiSwaggerProperties) {
-        ApiInfo apiInfo = new ApiInfoBuilder()
-                .title(apiSwaggerProperties.getInfo().getTitle())
-                .description(apiSwaggerProperties.getInfo().getDescription())
-                .version(apiSwaggerProperties.getInfo().getDescription())
-                .contact(new Contact(apiSwaggerProperties.getInfo().getContact().getName(), apiSwaggerProperties.getInfo().getContact().getUrl(), apiSwaggerProperties.getInfo().getContact().getEmail()))
-                .license(apiSwaggerProperties.getInfo().license)
-                .licenseUrl(apiSwaggerProperties.getInfo().licenseUrl)
-                .build();
-        return apiInfo;
-    }
-
-    @Bean(PREFIX + "UiConfiguration")
-    UiConfiguration uiConfig() {
-        return UiConfigurationBuilder.builder()
-                .deepLinking(true)
-                .displayOperationId(false)
-                .defaultModelsExpandDepth(1)
-                .defaultModelExpandDepth(1)
-                .defaultModelRendering(ModelRendering.EXAMPLE)
-                .displayRequestDuration(false)
-                .docExpansion(DocExpansion.NONE)
-                .filter(false)
-                .maxDisplayedTags(null)
-                .operationsSorter(OperationsSorter.ALPHA)
-                .showExtensions(true)
-                .tagsSorter(TagsSorter.ALPHA)
-                .supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
-                .validatorUrl(null)
                 .build();
     }
 
+    private Info apiInfo(ApiSwaggerProperties apiSwaggerProperties) {
+        Contact apiContact = new Contact();
+        apiContact.setName(apiSwaggerProperties.getInfo().getContact().getName());
+        apiContact.setEmail(apiSwaggerProperties.getInfo().getContact().getEmail());
+        apiContact.setUrl(apiSwaggerProperties.getInfo().getContact().getUrl());
+
+        License apiLicense = new License();
+        apiLicense.setName(apiSwaggerProperties.getInfo().getLicense());
+        apiLicense.setUrl(apiSwaggerProperties.getInfo().getLicenseUrl());
+
+        Info apiInformation = new Info();
+        apiInformation.setTitle(apiSwaggerProperties.getInfo().getTitle());
+        apiInformation.setDescription(apiSwaggerProperties.getInfo().getDescription());
+        apiInformation.setVersion(apiSwaggerProperties.getInfo().getVersion());
+        apiInformation.setContact(apiContact);
+        apiInformation.setLicense(apiLicense);
+
+        return apiInformation;
+    }
 }

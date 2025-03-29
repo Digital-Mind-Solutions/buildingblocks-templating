@@ -2,8 +2,8 @@ package org.digitalmind.buildingblocks.templating.core.template.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,8 +11,8 @@ import lombok.ToString;
 import org.digitalmind.buildingblocks.core.jpautils.entity.ContextVersionableAuditModel;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ import static org.digitalmind.buildingblocks.templating.core.template.entity.Tem
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 
-@ApiModel(value = "Template", description = "templates defined in the signing process.")
+@Schema(name = "Template", description = "templates defined in the signing process.")
 @JsonPropertyOrder(
         {
                 "id", "engine", "namespace", "name", "description",
@@ -52,39 +52,39 @@ public class Template extends ContextVersionableAuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    @ApiModelProperty(value = "Unique id of the template", required = false)
+    @Schema(name = "Unique id of the template")
     private Long id;
 
-    @ApiModelProperty(value = "The template engine", required = true)
+    @Schema(name = "The template engine")
     @Column(name = "engine")
     @NotNull
     private String engine;
 
-    @ApiModelProperty(value = "The template namespace", required = true)
+    @Schema(name = "The template namespace")
     @Column(name = "namespace", length = 750)
     @NotNull
     private String namespace;
 
-    @ApiModelProperty(value = "The template name", required = true)
+    @Schema(name = "The template name")
     @Column(name = "name", length = 256)
     @NotNull
     private String name;
 
-    @ApiModelProperty(value = "The template description", required = false)
+    @Schema(name = "The template description")
     @Column(name = "description")
     private String description;
 
-    @ApiModelProperty(value = "The template content", required = true)
+    @Schema(name = "The template content")
     @Column(name = "content")
     @NotNull
     private String content;
 
-    @ApiModelProperty(value = "The template content type", required = true)
+    @Schema(name = "The template content type")
     @Column(name = "[content_type]")
     @NotNull
     private String contentType;
 
-    @ApiModelProperty(value = "The template supported result mime types ", required = true)
+    @Schema(name = "The template supported result mime types ")
     @Column(name = "result_mime_types")
     @NotNull
     @ElementCollection

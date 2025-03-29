@@ -17,10 +17,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.expression.ThymeleafEvaluationContext;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.spring6.expression.ThymeleafEvaluationContext;
 
-import javax.activation.MimeType;
+import jakarta.activation.MimeType;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;

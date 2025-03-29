@@ -1,9 +1,9 @@
 package org.digitalmind.buildingblocks.templating.core.template.dto;
 
+import jakarta.activation.MimeType;
 import lombok.*;
 import org.springframework.core.io.Resource;
 
-import javax.activation.MimeType;
 
 @Builder
 @NoArgsConstructor
