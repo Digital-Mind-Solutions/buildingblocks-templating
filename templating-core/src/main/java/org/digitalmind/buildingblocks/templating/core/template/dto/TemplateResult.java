@@ -3,7 +3,7 @@ package org.digitalmind.buildingblocks.templating.core.template.dto;
 import lombok.*;
 import org.springframework.core.io.Resource;
 
-import javax.activation.MimeType;
+import jakarta.activation.MimeType;
 
 @Builder
 @NoArgsConstructor

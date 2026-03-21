@@ -4,7 +4,7 @@ package org.digitalmind.buildingblocks.templating.core.template.service;
 import org.digitalmind.buildingblocks.templating.core.template.dto.TemplateIdentifier;
 import org.digitalmind.buildingblocks.templating.core.template.dto.TemplateResult;
 
-import javax.activation.MimeType;
+import jakarta.activation.MimeType;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;

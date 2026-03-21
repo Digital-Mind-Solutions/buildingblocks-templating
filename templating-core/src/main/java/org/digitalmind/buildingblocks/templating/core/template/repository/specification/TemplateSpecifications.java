@@ -5,7 +5,7 @@ import org.digitalmind.buildingblocks.templating.core.template.dto.TemplateSearc
 import org.digitalmind.buildingblocks.templating.core.template.entity.Template;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.util.List;
 
 public class TemplateSpecifications {
