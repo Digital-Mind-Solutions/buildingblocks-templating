@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.digitalmind.buildingblocks.core.jpautils.entity.ContextVersionableAuditModel;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -70,11 +72,13 @@ public class Template extends ContextVersionableAuditModel {
     private String name;
 
     @Schema(description = "The template description")
-    @Column(name = "description")
+    @JdbcTypeCode(SqlTypes.CLOB)
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description;
 
     @Schema(description = "The template content", requiredMode = Schema.RequiredMode.REQUIRED)
-    @Column(name = "content")
+    @JdbcTypeCode(SqlTypes.CLOB)
+    @Column(name = "content", columnDefinition = "LONGTEXT", nullable = false)
     @NotNull
     private String content;
 
